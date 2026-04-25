@@ -96,7 +96,7 @@
                         <!-- Apartment Review Form -->
                         <div class="apartment-review-box" style="margin-top: 12px; padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.01);">
                             <h5 style="margin: 0 0 12px 0; font-size: 0.95rem; color: #0f172a;">Rate your living experience at {{ residency.apartment.name }}</h5>
-                            <form action="{% url 'add_review' %}" method="POST" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                            <form action="#" method="POST" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
                                 {% csrf_token %}
                                 <input type="hidden" name="reviewed_apartment_id" value="{{ residency.apartment.id }}">
 
