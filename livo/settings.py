@@ -35,6 +35,7 @@ AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
     #livo custom apps
+    'apartments',
     'users',
     'househelp',
     #default apps
