@@ -49,7 +49,7 @@ source .venv/bin/activate
 
 Inside Final_Project folder, run:
 
-git clone https://github.com/<your-username>/livo.git
+git clone https://github.com/fataharul/livo.git
 
 Go into the project folder:
 
