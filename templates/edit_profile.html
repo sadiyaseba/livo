@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="edit-profile-simple">
+    <div class="container tiny-container">
+        <div class="edit-card">
+            <header class="edit-header">
+                <a href="{% url 'dashboard' %}" class="back-link">← Return to Dashboard</a>
+                <h1>Tune Your Identity</h1>
+                <p>Update your credentials in the Livo ecosystem.</p>
+            </header>
+
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                
+                <div class="form-layout-vertical">
+                    <!-- Name Split -->
+                    <div class="field-row">
+                        <div class="field-item">
+                            <label>First Name</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="field-item">
+                            <label>Last Name</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="field-item">
+                        <label>Email Address</label>
+                        {{ form.email }}
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="field-item">
+                        <label>Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <!-- Contact Link -->
+                    <div class="field-item">
+                        <label>Professional Link (LinkedIn/Portfolio)</label>
+                        {{ form.contact_link }}
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="field-item">
+                        <label>Profile Image</label>
+                        <div class="image-upload-wrapper">
+                            {{ form.profile_image }}
+                        </div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="field-item">
+                        <label>Gender Identity</label>
+                        {{ form.gender }}
+                    </div>
+
+                    {% if profile_form %}
+                        <div class="profile-separator" style="margin: 20px 0; border-top: 2px solid #f1f5f9; padding-top: 20px;">
+                            <h2 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 16px;">Role-Specific Details</h2>
+                        </div>
+                        
+                        {% for field in profile_form %}
+                            <div class="field-item {% if field.field.widget.input_type == 'checkbox' and not field.field.widget.allow_multiple_selected %}checkbox-row{% endif %}">
+                                <label>{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small style="color: #94a3b8; font-size: 0.75rem; margin-top: 4px;">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <span style="color: #ef4444; font-size: 0.75rem;">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary premium-glow">Apply Changes</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .edit-profile-simple { background: #fafbfc; min-height: 90vh; padding: 60px 0; }
+    .tiny-container { max-width: 600px; margin: 0 auto; }
+    
+    .edit-card { background: white; border-radius: 24px; padding: 50px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+    
+    .edit-header { margin-bottom: 40px; }
+    .back-link { color: #64748b; font-size: 0.85rem; text-decoration: none; font-weight: 600; margin-bottom: 12px; display: block; }
+    .edit-header h1 { font-size: 1.8rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.5px; }
+    .edit-header p { color: #64748b; font-size: 0.95rem; margin-top: 4px; }
+
+    .form-layout-vertical { display: flex; flex-direction: column; gap: 24px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    
+    .field-item { display: flex; flex-direction: column; gap: 8px; }
+    .field-item label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: #94a3b8; }
+    
+    .field-item input, .field-item select { width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 0.95rem; transition: all 0.2s; }
+    .field-item input:focus { border-color: #ff4757; box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1); outline: none; }
+
+    /* Checkbox Alignment Fixes */
+    .field-item input[type="checkbox"] { width: auto; align-self: flex-start; cursor: pointer; }
+    
+    /* For Multiple Checkboxes (Django renders these as <ul> or <label><input></label>) */
+    .field-item ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+    .field-item ul li { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #475569; }
+    .field-item ul li input { width: 18px; height: 18px; margin: 0; }
+    .field-item ul li label { text-transform: none; font-size: 0.9rem; font-weight: 500; color: #475569; letter-spacing: 0; cursor: pointer; }
+
+    /* Single Checkbox (like Availability) */
+    .checkbox-row { flex-direction: row !important; align-items: center; gap: 12px !important; cursor: pointer; }
+    .checkbox-row input { width: 20px !important; height: 20px !important; }
+    .checkbox-row label { margin-bottom: 0; order: 2; }
+
+
+    /* Fix for Django's default file input appearance */
+    .image-upload-wrapper input[type="file"] { padding: 8px; }
+
+    .form-footer { display: flex; gap: 16px; margin-top: 20px; padding-top: 30px; border-top: 1px solid #f1f5f9; }
+    
+    .btn { padding: 14px 28px; border-radius: 12px; font-weight: 700; cursor: pointer; border: none; text-decoration: none; text-align: center; }
+    .btn-primary { background: #ff4757; color: white; }
+    .btn-secondary { background: #f1f5f9; color: #475569; }
+</style>
+{% endblock %}

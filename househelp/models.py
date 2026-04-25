@@ -14,7 +14,8 @@ class SkillTag(models.Model):
 class Househelp(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='househelp')
     skills = models.ManyToManyField(SkillTag, blank=True)
-    bio = models.TextField(max_length=500, blank=True, null=True,)
+    city = models.CharField(max_length=100, default="")
+    area = models.CharField(max_length=100, default="", help_text="e.g. Manhattan, Gulshan, or Downtown")
     availability = models.BooleanField(default=True)
     expected_salary = models.IntegerField(default=0)
 

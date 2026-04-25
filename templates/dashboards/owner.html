@@ -30,11 +30,21 @@
             </div>
             <div class="profile-actions">
                 <a href="#" class="btn btn-primary create-post-btn">Post Room Listing</a>
-                <a href="#" class="btn btn-secondary">Register New Property</a>
-                <a href="#" class="btn btn-secondary edit-profile-btn">Edit Profile</a>
+                <a href="{% url 'add_apartment' %}" class="btn btn-secondary">Register New Property</a>
+                <a href="{% url 'edit_profile' %}" class="btn btn-secondary edit-profile-btn">Edit Profile</a>
                 <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
             </div>
         </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert" style="padding: 16px; margin-bottom: 24px; border-radius: 12px; font-weight: 500; {% if message.tags == 'success' %}background:#d1fae5; color:#065f46; border:1px solid #a7f3d0;{% else %}background:#fee2e2; color:#991b1b; border:1px solid #fecaca;{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="data-section">
             <div class="section-top">
@@ -63,13 +73,19 @@
                 <h3>My Registered Properties</h3>
                 <p>Apartments you have registered. Share the Building ID with your tenants/roommates so they can join.</p>
             </div>
-            
+
             <div class="building-list">
                 {% for apartment in owned_apartments %}
                     <div class="building-card">
                         <div class="building-info">
                             <h4>{{ apartment.name }}</h4>
                             <span class="building-location">{{ apartment.area }}, {{ apartment.city }}</span>
+                        </div>
+                        <div class="building-actions" style="margin-left: auto; margin-right: 20px;">
+                            <form action="{% url 'remove_ownership' apartment.id %}" method="POST" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger compact" onclick="return confirm('Are you sure you want to remove your ownership from this apartment?');">Remove</button>
+                            </form>
                         </div>
                         <div class="building-id-badge">
                             <span class="id-label">ID</span>
@@ -89,20 +105,10 @@
                 <p>Has a building been registered without an owner? Enter the Building ID to claim it as your property.</p>
             </div>
 
-            {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="alert" style="padding: 12px; margin-bottom: 20px; border-radius: 8px; {% if message.tags == 'success' %}background:#d1fae5; color:#065f46;{% else %}background:#fee2e2; color:#991b1b;{% endif %}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
             <div class="join-building-box">
                 <h4>Enter Building ID</h4>
                 <p>Ask the roommate or person who registered the building for its ID (e.g., LIVO-0004). Buildings already owned by someone else cannot be claimed.</p>
-                <form action="#" method="POST" class="join-form">
+                <form action="{% url 'join_apartment' %}" method="POST" class="join-form">
                     {% csrf_token %}
                     <div class="input-wrapper">
                         <input type="text" name="building_id_input" placeholder="e.g. LIVO-0004 or 4" required>
@@ -111,8 +117,37 @@
                 </form>
             </div>
         </div>
+        <!-- MY LISTINGS SECTION -->
+        <div class="data-section mt-30">
+            <div class="section-top">
+                <h3>My Room Listings</h3>
+                <p>Manage the property advertisements you've posted.</p>
+            </div>
+
+            <div class="listings-grid" style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+                {% for post in user_posts %}
+                    <div class="listing-item" style="padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <div class="listing-main">
+                            <span class="role-badge" style="background:#f1f5f9; color:#475569; font-size: 0.65rem; margin-bottom: 8px;">{{ post.get_type_display }}</span>
+                            <h4 style="margin: 0 0 4px 0; color: #0f172a;">{{ post.title }}</h4>
+                            <p style="margin: 0; font-size: 0.85rem; color: #64748b;">${{ post.price }} &middot; Posted on {{ post.created_at|date:"M d, Y" }}</p>
+                        </div>
+                        <div class="listing-actions" style="display: flex; gap: 10px;">
+                            <a href="#" class="btn btn-secondary compact" style="font-size: 0.8rem; padding: 8px 16px;">Edit</a>
+                            <form action="#" method="POST" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger compact" style="font-size: 0.8rem; padding: 8px 16px;" onclick="return confirm('Delete this listing? This cannot be undone.');">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="empty-text">You haven't posted any room listings yet.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
+
 
 <style>
     .mt-30 { margin-top: 30px; }

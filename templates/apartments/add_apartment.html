@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="add-apartment-page">
+    <div class="container container-medium">
+        <div class="form-container glass">
+            <div class="form-header">
+                <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+                <h1>Register Your Building</h1>
+                <p>Provide the essential details about the property to enable room listings.</p>
+            </div>
+
+            <form method="post" class="livo-form">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    <div class="grid-row">
+                        <div class="form-group grid-span-full">
+                            <label for="{{ form.name.id_for_label }}">Property Name</label>
+                            {{ form.name }}
+                        </div>
+                    </div>
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label for="{{ form.area.id_for_label }}">Area</label>
+                            {{ form.area }}
+                        </div>
+                        <div class="form-group grid-span-2">
+                            <label for="{{ form.city.id_for_label }}">City</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.address.id_for_label }}">Full Address</label>
+                        {{ form.address }}
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Financials & Size</h3>
+                    <div class="grid-row">
+                        <div class="form-group grid-span-2">
+                            <label for="{{ form.rent_amount.id_for_label }}">{{ form.rent_amount.label }}</label>
+                            {{ form.rent_amount }}
+                            {% if form.rent_amount.help_text %}
+                                <small class="help-text">{{ form.rent_amount.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.total_rooms.id_for_label }}">Total Rooms</label>
+                            {{ form.total_rooms }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Amenities</h3>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            {{ form.has_wifi }} <label for="{{ form.has_wifi.id_for_label }}">High-Speed WiFi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            {{ form.has_parking }} <label for="{{ form.has_parking.id_for_label }}">Parking Available</label>
+                        </div>
+                        <div class="checkbox-item">
+                            {{ form.has_ac }} <label for="{{ form.has_ac.id_for_label }}">Air Conditioning</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block">Register Apartment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .add-apartment-page { 
+        min-height: 100vh; 
+        background: #f8fafc; 
+        padding: 60px 0;
+    }
+    .container-medium { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+    
+    .glass { 
+        background: white; 
+        border-radius: 24px; 
+        border: 1px solid #e2e8f0; 
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); 
+        padding: 40px;
+    }
+
+    .form-header { margin-bottom: 40px; }
+    .back-link { color: #64748b; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: inline-block; margin-bottom: 166px; }
+    
+    h1 { font-size: 2.2rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0; }
+    .form-header p { color: #64748b; font-size: 1.1rem; }
+
+    .form-section { margin-bottom: 40px; border-bottom: 1px solid #f1f5f9; padding-bottom: 30px; }
+    .form-section:last-of-type { border-bottom: none; }
+    .form-section h3 { font-size: 1rem; font-weight: 700; color: #ff4757; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; }
+
+    .grid-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-span-2 { grid-column: span 2; }
+    .grid-span-full { grid-column: 1 / -1; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; color: #334155; margin-bottom: 8px; font-size: 0.9rem; }
+    
+    .help-text { display: block; font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+
+    .form-control { 
+        width: 100%; 
+        padding: 12px 16px; 
+        border: 1px solid #cbd5e1; 
+        border-radius: 12px; 
+        font-family: inherit; 
+        font-size: 1rem; 
+        background: #fcfcfc;
+    }
+
+    .checkbox-group { display: flex; gap: 30px; flex-wrap: wrap; background: #f8fafc; padding: 20px; border-radius: 16px; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #475569; font-size: 0.9rem; }
+    .checkbox-item input { width: 18px; height: 18px; accent-color: #ff4757; }
+
+    .btn { cursor: pointer; padding: 16px 24px; border-radius: 12px; font-weight: 700; font-size: 1rem; border: none; transition: all 0.2s; }
+    .btn-primary { background: #0f172a; color: white; }
+    .btn-primary:hover { background: #334155; transform: translateY(-2px); }
+    .btn-block { width: 100%; display: block; }
+
+    @media (max-width: 600px) {
+        .grid-row { grid-template-columns: 1fr; }
+        .grid-span-2 { grid-column: span 1; }
+    }
+</style>
+{% endblock %}

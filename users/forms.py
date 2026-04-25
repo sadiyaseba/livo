@@ -59,6 +59,16 @@ class UserSignUpForm(UserCreationForm):
         widget=forms.NumberInput(attrs={'placeholder': 'Enter expected salary (e.g. 8000)', 'class': 'form-control'})
     )
 
+    city = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'e.g. Dhaka', 'class': 'form-control'})
+    )
+
+    area = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'e.g. Gulshan', 'class': 'form-control'})
+    )
+
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("first_name", "last_name", "email", "role", "gender", "username", "phone", "profile_image",
@@ -77,4 +87,17 @@ class ProfileUpdateForm(forms.ModelForm):
             'contact_link': forms.URLInput(attrs={'class': 'form-control'}),
             'profile_image': forms.FileInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+from users.models import LifestylePreference
+
+class LifestylePreferenceForm(forms.ModelForm):
+    class Meta:
+        model = LifestylePreference
+        fields = ['educational_institution', 'workplace', 'bio', 'preferences']
+        widgets = {
+            'preferences': forms.CheckboxSelectMultiple(),
+            'bio': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'educational_institution': forms.TextInput(attrs={'class': 'form-control'}),
+            'workplace': forms.TextInput(attrs={'class': 'form-control'}),
         }

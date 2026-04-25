@@ -171,25 +171,45 @@
                 </div>
 
                 <div id="househelp-fields" class="dynamic-section" style="display: none;">
-                    <h3 class="category-heading">Professional Expertise</h3>
-                    <div class="tag-grid">
-                        {% for choice in form.skills %}
-                        <div class="tag-item">
-                            <input type="checkbox" name="skills" value="{{ choice.data.value }}"
-                                id="{{ choice.id_for_label }}">
-                            <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                    <div class="preference-group">
+                        <h3 class="category-heading">Professional Expertise</h3>
+                        <div class="tag-grid">
+                            {% for choice in form.skills %}
+
+                            <div class="tag-item">
+                                <input type="checkbox" name="skills" value="{{ choice.data.value }}" id="{{ choice.id_for_label }}">
+                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
-                    <!-- 💰 Expected Salary Input -->
-                    <div class="form-group mt-4">
-                        <h3 class="category-heading">Expected Monthly Salary</h3>
-                        {{ form.expected_salary }}
-                        {% if form.expected_salary.errors %}
-                        <div class="field-error">{{ form.expected_salary.errors }}</div>
-                        {% endif %}
+
+                    <div class="preference-group mt-4">
+                        <h3 class="category-heading">Service Location</h3>
+                        <div class="form-layout">
+                            <div class="field-split">
+                                <div class="field-item">
+                                    <label>City</label>
+                                    {{ form.city }}
+                                    {% if form.city.errors %}<div class="field-error">{{ form.city.errors }}</div>{% endif %}
+                                </div>
+                                <div class="field-item">
+                                    <label>Area</label>
+                                    {{ form.area }}
+                                    {% if form.area.errors %}<div class="field-error">{{ form.area.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {% if form.skills.errors %}<div class="field-error">{{ form.skills.errors }}</div>{% endif %}
+
+                    <div class="preference-group mt-4">
+                        <h3 class="category-heading">Financial Expectations</h3>
+                        <div class="field-item">
+                            <label>Expected Monthly Salary (৳)</label>
+                            {{ form.expected_salary }}
+                            {% if form.expected_salary.errors %}<div class="field-error">{{ form.expected_salary.errors }}</div>{% endif %}
+                        </div>
+                    </div>
                 </div>
 
                 <div class="step-actions">
@@ -441,6 +461,10 @@
         background: #fff5f5;
     }
 
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+
     @keyframes slideIn {
         from {
             opacity: 0;
@@ -451,6 +475,13 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    /* Fix for househelp checkbox alignment in signup */
+    #househelp-fields .tag-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 </style>
 

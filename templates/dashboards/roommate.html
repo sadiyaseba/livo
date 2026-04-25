@@ -32,15 +32,27 @@
             <div class="profile-actions">
                 <a href="#" class="btn btn-primary create-post-btn">Post Room Listing</a>
                 {% if not residencies %}
-                    <a href="#" class="btn btn-secondary">Register My Building</a>
+                    <a href="{% url 'add_apartment' %}" class="btn btn-secondary">Register My Building</a>
                 {% endif %}
-                <a href="#" class="btn btn-secondary edit-profile-btn">Edit Profile</a>
+                <a href="{% url 'edit_profile' %}" class="btn btn-secondary edit-profile-btn">Edit Profile</a>
                 <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
             </div>
         </div>
 
+        {% if profile.bio %}
+        <!-- USER BIO -->
+        <div class="data-section" style="margin-bottom: 30px;">
+            <div class="section-top">
+                <h3>About Me</h3>
+            </div>
+            <p style="color: #475569; line-height: 1.6; font-style: italic; border-left: 3px solid #ff4757; padding-left: 15px;">
+                "{{ profile.bio }}"
+            </p>
+        </div>
+        {% endif %}
+
         <!-- LIFESTYLE PREFERENCES -->
-        <div class="data-section">
+
             <div class="section-top">
                 <h3>Lifestyle Matrix</h3>
                 <p>These preferences help us find your perfect matches.</p>
@@ -60,29 +72,55 @@
                 <h3>My Buildings</h3>
                 <p>Apartments you are registered as living in.</p>
             </div>
-            
+
             <div class="building-list">
                 {% for residency in residencies %}
-                    <div class="building-card">
-                        <div class="building-info">
-                            <h4>{{ residency.apartment.name }}</h4>
-                            <span class="building-location">{{ residency.apartment.area }}, {{ residency.apartment.city }}</span>
+                    <div class="building-card-wrapper" style="margin-bottom: 24px;">
+                        <div class="building-card">
+                            <div class="building-info">
+                                <h4>{{ residency.apartment.name }}</h4>
+                                <span class="building-location">{{ residency.apartment.area }}, {{ residency.apartment.city }}</span>
+                            </div>
+                            <div class="building-actions" style="margin-left: auto; margin-right: 20px;">
+                                <form action="{% url 'leave_apartment' residency.apartment.id %}" method="POST" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger compact" onclick="return confirm('Are you sure you want to remove this apartment?');">Remove</button>
+                                </form>
+                            </div>
+                            <div class="building-id-badge">
+                                <span class="id-label">ID</span>
+                                <span class="id-number">LIVO-{{ residency.apartment.id|stringformat:"04d" }}</span>
+                            </div>
                         </div>
-                        <div class="building-actions" style="margin-left: auto; margin-right: 20px;">
-                            <form action="#" method="POST" style="margin: 0;">
+
+                        <!-- Apartment Review Form -->
+                        <div class="apartment-review-box" style="margin-top: 12px; padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.01);">
+                            <h5 style="margin: 0 0 12px 0; font-size: 0.95rem; color: #0f172a;">Rate your living experience at {{ residency.apartment.name }}</h5>
+                            <form action="{% url 'add_review' %}" method="POST" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger compact" onclick="return confirm('Are you sure you want to remove this apartment?');">Remove</button>
+                                <input type="hidden" name="reviewed_apartment_id" value="{{ residency.apartment.id }}">
+
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <select name="rating" required style="padding: 8px 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.9rem;">
+                                        <option value="5">5 ⭐ Excellent</option>
+                                        <option value="4">4 ⭐ Good</option>
+                                        <option value="3">3 ⭐ Average</option>
+                                        <option value="2">2 ⭐ Poor</option>
+                                        <option value="1">1 ⭐ Terrible</option>
+                                    </select>
+                                </div>
+
+                                <input type="text" name="comment" placeholder="How is the environment, management, and facilities?" required style="flex-grow: 1; min-width: 250px; padding: 10px 14px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.9rem;">
+
+                                <button type="submit" class="btn btn-primary compact" style="padding: 10px 20px; font-size: 0.85rem;">Submit Review</button>
                             </form>
-                        </div>
-                        <div class="building-id-badge">
-                            <span class="id-label">ID</span>
-                            <span class="id-number">LIVO-{{ residency.apartment.id|stringformat:"04d" }}</span>
                         </div>
                     </div>
                 {% empty %}
                     <p class="empty-text">You haven't joined any buildings yet.</p>
                 {% endfor %}
             </div>
+
 
             {% if residencies %}
                 <div class="one-apt-notice">
@@ -96,7 +134,7 @@
                 <div class="join-building-box">
                     <h4>Join an Existing Building</h4>
                     <p>Did your roommate or owner already register the apartment? Ask them for the Building ID (e.g., LIVO-0004) and enter it below to join.</p>
-                    <form action="#" method="POST" class="join-form">
+                    <form action="{% url 'join_apartment' %}" method="POST" class="join-form">
                         {% csrf_token %}
                         <div class="input-wrapper">
                             <input type="text" name="building_id_input" placeholder="e.g. LIVO-0004 or 4" required>
@@ -114,7 +152,7 @@
                 <h3>People in My Buildings</h3>
                 <p>Submit reviews for your roommates and apartment owners.</p>
             </div>
-            
+
             {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
@@ -147,12 +185,12 @@
                                 <span class="role-badge" style="background:#f1f5f9; color:#475569; padding:2px 8px; font-size:0.7rem;">Apartment Owner</span>
                             </div>
                         </div>
-                        
+
                         <div class="review-form-wrapper" style="flex-grow: 1; max-width: 400px; min-width: 280px;">
                             <form action="#" method="POST" style="display: flex; flex-direction: column; gap: 10px; background:#f8fafc; padding: 16px; border-radius:12px; border:1px solid #e2e8f0;">
                                 {% csrf_token %}
                                 <input type="hidden" name="reviewed_user_id" value="{{ person.id }}">
-                                
+
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <strong style="font-size:0.85rem; color:#64748b; text-transform:uppercase;">Rating:</strong>
                                     <select name="rating" required style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1;">
@@ -187,12 +225,12 @@
                                 <span class="role-badge" style="background:#fff1f2; color:#ff4757; padding:2px 8px; font-size:0.7rem;">Co-Resident</span>
                             </div>
                         </div>
-                        
+
                         <div class="review-form-wrapper" style="flex-grow: 1; max-width: 400px; min-width: 280px;">
                             <form action="#" method="POST" style="display: flex; flex-direction: column; gap: 10px; background:#f8fafc; padding: 16px; border-radius:12px; border:1px solid #e2e8f0;">
                                 {% csrf_token %}
                                 <input type="hidden" name="reviewed_user_id" value="{{ person.id }}">
-                                
+
                                 <div style="display: flex; gap: 10px; align-items: center;">
                                     <strong style="font-size:0.85rem; color:#64748b; text-transform:uppercase;">Rating:</strong>
                                     <select name="rating" required style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1;">
@@ -212,8 +250,37 @@
             </div>
         </div>
 
+        <!-- MY LISTINGS SECTION -->
+        <div class="data-section mt-30">
+            <div class="section-top">
+                <h3>My Active Listings</h3>
+                <p>Manage the rooms or services you've posted on the platform.</p>
+            </div>
+
+            <div class="listings-grid" style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+                {% for post in user_posts %}
+                    <div class="listing-item" style="padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <div class="listing-main">
+                            <span class="role-badge" style="background:#e0f2fe; color:#0369a1; font-size: 0.65rem; margin-bottom: 8px;">{{ post.get_type_display }}</span>
+                            <h4 style="margin: 0 0 4px 0; color: #0f172a;">{{ post.title }}</h4>
+                            <p style="margin: 0; font-size: 0.85rem; color: #64748b;">${{ post.price }} &middot; Posted on {{ post.created_at|date:"M d, Y" }}</p>
+                        </div>
+                        <div class="listing-actions" style="display: flex; gap: 10px;">
+                            <a href="#" class="btn btn-secondary compact" style="font-size: 0.8rem; padding: 8px 16px;">Edit</a>
+                            <form action="#" method="POST" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger compact" style="font-size: 0.8rem; padding: 8px 16px;" onclick="return confirm('Delete this listing? This cannot be undone.');">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="empty-text">You haven't posted any listings yet.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
+
 
 <style>
     .mt-30 { margin-top: 30px; }
