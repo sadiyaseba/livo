@@ -25,3 +25,34 @@
                     </p>
                 </div>
             </div>
+             <div class="profile-actions">
+                <div class="building-id-badge" style="background: #0f172a; color: white; padding: 12px 20px; border-radius: 12px; text-align: center;">
+                    <span style="font-size: 0.65rem; text-transform: uppercase; display: block; opacity: 0.7;">Building ID</span>
+                    <span style="font-size: 1.2rem; font-weight: 800;">LIVO-{{ apartment.id|stringformat:"04d" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- APARTMENT DETAILS -->
+        <div class="data-section mt-30">
+            <div class="section-top">
+                <h3>Property Overview</h3>
+                <p>Facilities and financials for this apartment.</p>
+            </div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="status-label">Total Rooms</span>
+                    <span class="status-value">{{ apartment.total_rooms }} Rooms</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Monthly Rent</span>
+                    <span class="status-value highlight">${{ apartment.rent_amount }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Features</span>
+                    <div class="tag-list" style="margin-top: 5px;">
+                        {% if apartment.has_wifi %}<span class="livo-tag mini">WiFi</span>{% endif %}
+                        {% if apartment.has_ac %}<span class="livo-tag mini">AC</span>{% endif %}
+                        {% if apartment.has_parking %}<span class="livo-tag mini">Parking</span>{% endif %}
+                    </div>
+                </div>
