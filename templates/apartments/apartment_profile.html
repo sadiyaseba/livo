@@ -115,3 +115,28 @@
                 <p>What people are saying about living here.</p>
             </div>
             <div class="reviews-list">
+             {% for review in reviews %}
+                    <div class="review-item" style="padding: 20px; border-bottom: 1px solid #f1f5f9;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="circle mini">
+                                    {% if review.reviewer.profile_image %}
+                                        <img src="{{ review.reviewer.profile_image.url }}" alt="{{ review.reviewer.username }}">
+                                    {% else %}
+                                        <div class="avatar-placeholder">{{ review.reviewer.first_name|first|upper }}</div>
+                                    {% endif %}
+                                </div>
+                                <strong style="font-size: 0.95rem;">{{ review.reviewer.username }}</strong>
+                            </div>
+                            <span style="color: #ff9f43; font-weight: 700;">{{ review.rating }} ⭐</span>
+                        </div>
+                        <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0;">"{{ review.comment }}"</p>
+                        <span style="display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 10px;">{{ review.created_at|date:"F Y" }}</span>
+                    </div>
+                {% empty %}
+                    <p class="empty-text">No reviews for this property yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
