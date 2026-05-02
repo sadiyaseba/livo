@@ -56,3 +56,32 @@
                         {% if apartment.has_parking %}<span class="livo-tag mini">Parking</span>{% endif %}
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- PEOPLE SECTION -->
+        <div class="data-section mt-30">
+            <div class="section-top">
+                <h3>Management & Residents</h3>
+                <p>Who owns and lives in this building.</p>
+            </div>
+
+            <div class="people-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- Owner Card -->
+                <div class="mini-person-card">
+                    <span class="status-label">Managed By</span>
+                    {% if apartment.owner %}
+                        <a href="{% url 'public_profile' apartment.owner.id %}" class="person-link">
+                            <div class="circle mini">
+                                {% if apartment.owner.profile_image %}
+                                    <img src="{{ apartment.owner.profile_image.url }}" alt="{{ apartment.owner.username }}">
+                                {% else %}
+                                    <div class="avatar-placeholder">{{ apartment.owner.first_name|first|upper }}</div>
+                                {% endif %}
+                            </div>
+                            <span>{{ apartment.owner.get_full_name|default:apartment.owner.username }}</span>
+                        </a>
+                    {% else %}
+                        <p class="empty-text">No owner registered</p>
+                    {% endif %}
+                </div>
