@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'apartments',
     'users',
     'househelp',
+    'posts',
     #default apps
     'django.contrib.admin',
     'django.contrib.auth',
