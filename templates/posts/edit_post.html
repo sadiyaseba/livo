@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="create-post-page">
+    <div class="container container-narrow">
+        <div class="form-container glass">
+            <div class="form-header">
+                <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+                <h1>Edit Your Post</h1>
+                <p>Update the details of your {{ post.get_type_display|lower }}.</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="livo-form">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    {% if not field.is_hidden %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <span class="error-text">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block">Update Post</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-block" style="display: block; margin-top: 12px; text-decoration: none; text-align: center;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .create-post-page { 
+        min-height: 100vh; 
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); 
+        padding: 60px 0;
+    }
+    .container-narrow { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+    
+    .glass { 
+        background: rgba(255, 255, 255, 0.95); 
+        backdrop-filter: blur(10px); 
+        border-radius: 24px; 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05); 
+        padding: 40px;
+    }
+
+    .form-header { margin-bottom: 32px; }
+    .back-link { color: #64748b; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.2s; display: inline-block; margin-bottom: 16px; }
+    .back-link:hover { color: #0f172a; }
+    
+    h1 { font-size: 2rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0; letter-spacing: -0.5px; }
+    .form-header p { color: #64748b; font-size: 1rem; }
+
+    .livo-form .form-group { margin-bottom: 24px; }
+    .livo-form label { display: block; font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.95rem; }
+    
+    .livo-form input, .livo-form select, .livo-form textarea { 
+        width: 100%; 
+        padding: 14px 16px; 
+        border: 2px solid #e2e8f0; 
+        border-radius: 12px; 
+        font-family: inherit; 
+        font-size: 1rem; 
+        transition: all 0.2s; 
+        background: #f8fafc;
+    }
+
+    .livo-form input:focus, .livo-form select:focus, .livo-form textarea:focus { 
+        outline: none; 
+        border-color: #ff4757; 
+        background: white; 
+        box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.1);
+    }
+
+    .help-text { display: block; color: #94a3b8; font-size: 0.8rem; margin-top: 6px; }
+    .error-text { color: #ef4444; font-size: 0.85rem; font-weight: 600; margin-top: 6px; display: block; }
+
+    .btn { cursor: pointer; padding: 16px 24px; border-radius: 12px; font-weight: 700; font-size: 1rem; transition: all 0.2s; border: none; }
+    .btn-primary { background: #ff4757; color: white; }
+    .btn-primary:hover { background: #ff2e3b; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(255, 71, 87, 0.2); }
+    
+    .btn-secondary { background: #f1f5f9; color: #475569; }
+    .btn-secondary:hover { background: #e2e8f0; }
+    
+    .btn-block { width: 100%; display: block; }
+</style>
+{% endblock %}
