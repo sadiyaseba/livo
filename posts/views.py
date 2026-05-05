@@ -125,3 +125,43 @@ def post_feed(request, post_type):
         context['posts'] = posts
 
     return render(request, 'posts/feed.html', context)
+
+
+@login_required
+@require_POST
+def toggle_like_ajax(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    # Since we are using simple integer likes as requested:
+    # We'll just increment for now. (Facebook style usually toggles, but without liked_by list,
+    # we'll just implement a simple +1 "heart" action).
+    post.likes += 1
+    post.save()
+    return JsonResponse({
+        'status': 'success',
+        'likes_count': post.likes
+    })
+
+
+@login_required
+@require_POST
+def add_comment_ajax(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    data = json.loads(request.body)
+    content = data.get('content')
+
+    if content:
+        comment = Comment.objects.create(
+            post=post,
+            user=request.user,
+            content=content
+        )
+        return JsonResponse({
+            'status': 'success',
+            'comment': {
+                'user': comment.user.username,
+                'content': comment.content,
+                'created_at': 'Just now'
+            }
+        })
+
+    return JsonResponse({'status': 'error', 'message': 'Empty content'}, status=400)

@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.db.models import Avg
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import UserSignUpForm, ProfileUpdateForm, LifestylePreferenceForm
-from .models import LifestylePreference, PreferenceTag
+from .models import User, LifestylePreference, PreferenceTag
 from househelp.models import Househelp
 from househelp.forms import HousehelpProfileForm
 
@@ -162,4 +163,24 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
+
+def public_profile(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    reviews = target_user.received_reviews.all().order_by('-created_at')
+    avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+
+    context = {
+        'target_user': target_user,
+        'reviews': reviews,
+        'avg_rating': round(avg_rating, 1) if avg_rating else None,
+    }
+
+    # Passing role-specific profiles if they exist
+    if target_user.role == 'ROOMMATE':
+        context['profile'] = LifestylePreference.objects.filter(user=target_user).first()
+    elif target_user.role == 'HOUSE_HELP':
+        context['profile'] = Househelp.objects.filter(user=target_user).first()
+
+    return render(request, 'public_profile.html', context)
 

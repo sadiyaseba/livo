@@ -48,7 +48,7 @@
                                 <label>Max Price</label>
                                 <div class="price-input-wrapper">
                                     <span class="currency">$</span>
-                                     <input type="number" name="max_price" placeholder="Budget" value="{{ request.GET.max_price }}">
+                                    <input type="number" name="max_price" placeholder="Budget" value="{{ request.GET.max_price }}">
                                 </div>
                             </div>
                         {% elif post_type == 'HELP' %}
@@ -98,7 +98,7 @@
                     </a>
                 </div>
             </div>
-            </aside>
+        </aside>
 
 
         <!-- MAIN CONTENT (Post Stream) -->
@@ -147,8 +147,8 @@
 
 
                             <div class="tag-list help-skills">
-                                  {% for skill in help.skills.all %}
-                                <span class="livo-tag small-tag">{{ skill.name }}</span>
+                                {% for skill in help.skills.all %}
+                                    <span class="livo-tag small-tag">{{ skill.name }}</span>
                                 {% endfor %}
                             </div>
                         </div>
@@ -248,7 +248,7 @@
                                                 <span style="font-size: 0.6rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Current Roommates</span>
                                                 <div style="display: flex; gap: 6px;">
                                                     {% for record in post.apartment.active_residents %}
-                                                    <a href="{% url 'public_profile' record.resident.id %}" title="View Roommate: {{ record.resident.username }}">
+                                                        <a href="{% url 'public_profile' record.resident.id %}" title="View Roommate: {{ record.resident.username }}">
                                                             <div class="circle mini" style="width: 28px; height: 28px; border: 2px solid #e2e8f0;">
                                                                 {% if record.resident.profile_image %}
                                                                     <img src="{{ record.resident.profile_image.url }}" alt="Roommate">
@@ -298,7 +298,7 @@
                                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                                 </svg>
                                 <span>Comment</span>
-                                </button>
+                            </button>
                             <a href="{{ post.message_link|default:'#' }}" target="_blank" class="action-btn message-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -348,7 +348,7 @@
                                 </div>
                             </div>
                         </div>
-                        </article>
+                    </article>
                 {% empty %}
                     <div class="empty-feed">
                         <p>No posts available in this community yet.</p>
@@ -396,7 +396,8 @@
             console.error('Error liking post:', error);
         }
     }
- // 3. Handle Enter Key for Comments
+
+    // 3. Handle Enter Key for Comments
     function handleCommentKey(event, postId) {
         if (event.key === 'Enter') {
             submitComment(postId);
@@ -472,3 +473,147 @@
         gap: 30px;
     }
 
+    .feed-sidebar { width: 320px; flex-shrink: 0; }
+    .feed-main-content { flex-grow: 1; max-width: 680px; }
+
+    .sidebar-sticky {
+        position: sticky;
+        top: 20px;
+    }
+
+    /* Redesigned Sidebar Cards */
+    .sidebar-info-card { margin-bottom: 24px; }
+    .category-pill { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; font-weight: 800; margin-bottom: 12px; letter-spacing: 0.05em; }
+    .sidebar-info-card h1 { font-size: 2.4rem; font-weight: 900; color: #0f172a; margin: 0 0 12px 0; letter-spacing: -1px; line-height: 1.1; }
+    .sidebar-info-card p { font-size: 0.95rem; color: #64748b; line-height: 1.5; }
+
+    .filter-card { background: white; border-radius: 20px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    .filter-header { display: flex; align-items: center; gap: 10px; color: #0f172a; margin-bottom: 20px; }
+    .filter-header h3 { font-size: 1.1rem; font-weight: 800; margin: 0; }
+
+    .sidebar-filter-form { display: flex; flex-direction: column; gap: 20px; }
+    .input-group { display: flex; flex-direction: column; gap: 8px; }
+    .input-group label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .input-group input, .input-group select {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 2px solid #f1f5f9;
+        background: #f8fafc;
+        font-size: 0.95rem;
+        color: #0f172a;
+        transition: all 0.2s;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+        outline: none;
+        border-color: #1877f2;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(24, 119, 242, 0.1);
+    }
+
+    .price-input-wrapper { position: relative; display: flex; align-items: center; }
+    .currency { position: absolute; left: 14px; color: #94a3b8; font-weight: 700; }
+    .price-input-wrapper input { padding-left: 30px; }
+
+    .sidebar-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+    .btn-apply { background: #0f172a; color: white; padding: 14px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-apply:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15); }
+    .link-clear { text-align: center; font-size: 0.85rem; color: #64748b; text-decoration: none; font-weight: 600; }
+    .link-clear:hover { color: #ef4444; }
+
+    .sidebar-promo-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        background: linear-gradient(135deg, #1877f2 0%, #0561d6 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    .sidebar-promo-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 20px rgba(24, 119, 242, 0.25); }
+    .sidebar-promo-btn span { font-size: 1.5rem; font-weight: 300; }
+    .sidebar-promo-btn strong { font-size: 1rem; }
+
+    .mt-20 { margin-top: 20px; }
+
+    .social-card { background: var(--fb-card); border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
+
+    /* Header */
+    .card-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .author-info { display: flex; align-items: center; gap: 10px; }
+    .circle { border-radius: 50%; overflow: hidden; background: #e4e6eb; }
+    .author-avatar { width: 40px; height: 40px; }
+    .circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .avatar-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #65676b; }
+
+    .author-details { display: flex; flex-direction: column; }
+    .name-row { display: flex; align-items: center; gap: 8px; }
+    .author-name { font-weight: 600; color: var(--fb-text-main); font-size: 1rem; }
+    .role-badge { font-size: 0.65rem; font-weight: 700; background: #f0f2f5; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+    .role-badge.vendor { color: #ff4757; }
+    .role-badge.roommate { color: #1877f2; }
+    .post-time { font-size: 0.8rem; color: var(--fb-text-sec); }
+
+    /* Body */
+    .card-body { padding: 4px 16px 12px; }
+    .social-post-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--fb-text-main); }
+    .social-post-text { font-size: 0.95rem; line-height: 1.5; color: var(--fb-text-main); white-space: pre-line; }
+    .social-location-tag { margin-top: 10px; font-size: 0.85rem; color: var(--fb-accent); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+
+    /* Media */
+    .card-media { background: #000; width: 100%; }
+    .media-main { width: 100%; display: block; max-height: 700px; object-fit: contain; }
+
+    /* Stats */
+    .engagement-stats { padding: 10px 16px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--fb-border); margin: 0 16px; font-size: 0.9rem; color: var(--fb-text-sec); }
+    .stat-item { display: flex; align-items: center; gap: 4px; }
+
+    /* Action Bar */
+    .action-bar { padding: 4px 16px; display: flex; gap: 4px; }
+    .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px; border-radius: 6px; border: none; background: transparent; cursor: pointer; color: var(--fb-text-sec); font-weight: 600; font-size: 0.9rem; transition: background 0.2s; text-decoration: none; }
+    .action-btn:hover { background: #f2f2f2; }
+    .heart-icon { transition: all 0.2s; }
+    .liked-animate .heart-icon { fill: #ff4757; stroke: #ff4757; transform: scale(1.3); }
+
+    /* Comments Section */
+    .comments-section { padding: 12px 16px; background: #fff; border-top: 1px solid var(--fb-border); }
+    .comments-list { margin-bottom: 16px; }
+    .comment-item { display: flex; gap: 8px; margin-bottom: 12px; }
+    .circle.mini { width: 32px; height: 32px; flex-shrink: 0; }
+    .comment-content-box { background: #f0f2f5; padding: 8px 12px; border-radius: 18px; position: relative; }
+    .comment-user-name { font-weight: 700; font-size: 0.85rem; color: var(--fb-text-main); margin-bottom: 2px; }
+    .comment-text { font-size: 0.9rem; line-height: 1.4; color: var(--fb-text-main); }
+    .comment-time { font-size: 0.75rem; color: var(--fb-text-sec); margin-top: 4px; padding-left: 4px; }
+
+    /* Add Comment Box */
+    .add-comment-box { display: flex; gap: 8px; align-items: center; }
+    .input-wrapper { flex-grow: 1; background: #f0f2f5; border-radius: 20px; display: flex; align-items: center; padding: 0 12px; }
+    .input-wrapper input { flex-grow: 1; border: none; background: transparent; padding: 8px 0; font-size: 0.9rem; outline: none; }
+    .send-comment-btn { background: transparent; border: none; color: var(--fb-accent); cursor: pointer; padding: 4px; display: flex; align-items: center; }
+
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .help-card .card-body { padding-top: 12px; }
+    .help-stats { display: flex; gap: 16px; margin-bottom: 16px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .help-stat { font-size: 0.85rem; color: var(--fb-text-sec); display: flex; flex-direction: column; }
+    .help-stat strong { color: var(--fb-text-main); font-size: 1.1rem; }
+    .help-stat.highlight strong { color: #2ecc71; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .livo-tag.small-tag { font-size: 0.75rem; padding: 4px 10px; background: #ebf0ff; color: var(--fb-accent); font-weight: 700; border: none; border-radius: 50px; }
+    .help-action-bar { border-top: 1px solid var(--fb-border); padding: 12px 16px; }
+    .full-width-btn { background: var(--fb-bg); border: 1px solid var(--fb-border); width: 100%; justify-content: center; color: var(--fb-text-main); }
+    .full-width-btn:hover { background: #e4e6eb; }
+
+    @media (max-width: 600px) {
+        .social-card { border-radius: 0; margin-left: -15px; margin-right: -15px; }
+        .feed-header h1 { font-size: 1.8rem; }
+    }
+</style>
+{% endblock %}

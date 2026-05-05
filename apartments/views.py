@@ -1,10 +1,9 @@
-from django.shortcuts import render
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Avg
 from .forms import ApartmentForm
-from .models import ResidentRecord
+from .models import ResidentRecord, Apartment
 
 
 @login_required
@@ -66,7 +65,6 @@ def join_apartment(request):
             return redirect('dashboard')
 
         try:
-            from apartments.models import Apartment
             apartment = Apartment.objects.get(id=int(clean_id))
 
             if request.user.role == 'HOUSE_OWNER':
@@ -123,7 +121,6 @@ def leave_apartment(request, apartment_id):
 @login_required
 def remove_ownership(request, apartment_id):
     if request.method == 'POST':
-        from .models import Apartment
         apartment = Apartment.objects.filter(id=apartment_id, owner=request.user).first()
         if apartment:
             apartment.owner = None
@@ -132,3 +129,21 @@ def remove_ownership(request, apartment_id):
         else:
             messages.error(request, "You do not own this apartment.")
     return redirect('dashboard')
+
+
+def apartment_profile(request, apartment_id):
+    apartment = get_object_or_404(Apartment, id=apartment_id)
+    reviews = apartment.reviews.all().order_by('-created_at')
+    avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+
+    # Get active residents
+    residents = ResidentRecord.objects.filter(apartment=apartment, is_active=True).select_related('resident')
+
+    context = {
+        'apartment': apartment,
+        'reviews': reviews,
+        'avg_rating': round(avg_rating, 1) if avg_rating else None,
+        'residents': residents,
+    }
+    return render(request, 'apartments/apartment_profile.html', context)
+

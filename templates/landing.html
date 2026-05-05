@@ -11,7 +11,7 @@
                 Find perfect roommates and simplify your shared life through a beautifully designed, social-first experience.
             </p>
             <div style="display: flex; gap: 16px;">
-                <a href="#" class="btn btn-primary">Find Roommates</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary">Find Roommates</a>
                 <a href="#" class="btn btn-secondary">Explore Homes</a>
             </div>
         </div>
@@ -22,13 +22,15 @@
             <!-- Editorial Asymmetric Overlay -->
             <div class="card hero-testimonial-card" style="position: absolute; bottom: -40px; left: -100px; width: 340px; padding: 24px;">
                 <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
-                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--livo-red-container);"></div>
+                    <div style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden;">
+                        <img src="{% static 'images/ariful.png' %}" alt="Ariful Islam" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
                     <div>
-                        <div style="font-weight: 600; font-size: 14px;">Marcus Chen</div>
+                        <div style="font-weight: 600; font-size: 14px;">Ariful Islam</div>
                         <div style="font-size: 12px; color: var(--secondary);">Looking for Roommate</div>
                     </div>
                 </div>
-                <p style="font-size: 13px; font-style: italic; color: var(--on-surface);">"Found my best friend and a beautiful home in Chelsea within 48 hours."</p>
+                <p style="font-size: 13px; font-style: italic; color: var(--on-surface);">"Found my best friend and a beautiful home in Banani within 48 hours."</p>
             </div>
         </div>
     </div>
@@ -40,19 +42,28 @@
         <div style="text-align: center; margin-bottom: 80px;">
             <h2 class="headline-md">Designed for how you live today.</h2>
         </div>
-        
+
         <div class="editorial-grid">
             <div class="card" style="grid-column: 1 / span 4;">
+                <div style="margin-bottom: 24px; color: var(--livo-red);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
                 <h3 style="margin-bottom: 16px;">Precision Compatibility</h3>
-                <p class="body-md">Our curation algorithm matches you based on aesthetic, lifestyle, and shared values.</p>
+                <p class="body-md">Browse and discover perfect roommates based on shared values, aesthetics, and lifestyle choices.</p>
             </div>
             <div class="card" style="grid-column: 5 / span 4;">
-                <h3 style="margin-bottom: 16px;">Split & Sip</h3>
-                <p class="body-md">Never talk about money again. Shared groceries, bills, and rent handled in one tap.</p>
+                <div style="margin-bottom: 24px; color: var(--livo-red);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h3 style="margin-bottom: 16px;">Transparent Profiles</h3>
+                <p class="body-md">View detailed habits and preferences to ensure a great fit.</p>
             </div>
             <div class="card" style="grid-column: 9 / span 4;">
+                <div style="margin-bottom: 24px; color: var(--livo-red);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
                 <h3 style="margin-bottom: 16px;">Curated Listings</h3>
-                <p class="body-md">Every home verified for design and quality.</p>
+                <p class="body-md">Discover premium, verified homes that meet our strict standards for design, safety, and modern amenities.</p>
             </div>
         </div>
     </div>
@@ -69,7 +80,7 @@
         <div style="grid-column: 8 / span 5;">
             <h2 class="headline-md">Household Services</h2>
             <p class="body-lg" style="margin-bottom: 32px;">Seamlessly manage your home life with curated local professional services.</p>
-            
+
             <div style="display: flex; flex-direction: column; gap: 24px;">
                 <div style="display: flex; gap: 20px; align-items: start;">
                     <div style="padding: 12px; background: var(--surface-low); border-radius: 12px; font-weight: bold; color: var(--livo-red);">01</div>
@@ -81,8 +92,8 @@
                 <div style="display: flex; gap: 20px; align-items: start;">
                     <div style="padding: 12px; background: var(--surface-low); border-radius: 12px; font-weight: bold; color: var(--livo-red);">02</div>
                     <div>
-                        <h4 style="margin-bottom: 8px;">Discover Homemade Food</h4>
-                        <p style="font-size: 14px; color: var(--secondary);">Connect with local vendors for fresh, homemade meal options.</p>
+                        <h4 style="margin-bottom: 8px;">Connect Directly</h4>
+                        <p style="font-size: 14px; color: var(--secondary);">Review skills, experience, and contact service providers directly to discuss your needs.</p>
                     </div>
                 </div>
             </div>
@@ -96,19 +107,38 @@
         <h2 class="headline-md" style="text-align: center;">Loved by modern dwellers.</h2>
         <div class="editorial-grid" style="margin-top: 60px;">
             <div class="card" style="grid-column: 1 / span 4; border: 1px solid var(--outline-variant); background: transparent;">
-                <p style="margin-bottom: 24px; font-style: italic;">"LIVO turned the nightmare of moving into an editorial experience. I found my current flatmate here and couldn't be happier."</p>
-                <div style="font-weight: 600;">Sarah Jenkins</div>
-                <div style="font-size: 12px; color: var(--secondary);">Brooklyn, NY</div>
+                <p style="margin-bottom: 24px; font-style: italic;">"LIVO turned the nightmare of moving into a seamless experience. I found my current flatmate here and couldn't be happier."</p>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
+                        <img src="{% static 'images/farhana.png' %}" alt="Farhana Ahmed" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">Farhana Ahmed</div>
+                        <div style="font-size: 12px; color: var(--secondary);">Dhanmondi, Dhaka</div>
+                    </div>
+                </div>
             </div>
             <div class="card" style="grid-column: 5 / span 4; border: 1px solid var(--outline-variant); background: transparent;">
                 <p style="margin-bottom: 24px; font-style: italic;">"The only app that actually understands aesthetic and lifestyle compatibility. It's more than housing, it's community."</p>
-                <div style="font-weight: 600;">David Miller</div>
-                <div style="font-size: 12px; color: var(--secondary);">London, UK</div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
+                        <img src="{% static 'images/sajid.png' %}" alt="Sajid Rahman" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">Sajid Rahman</div>
+                        <div style="font-size: 12px; color: var(--secondary);">Nasirabad, Chattogram</div>
+                    </div>
+                </div>
             </div>
             <div class="card" style="grid-column: 9 / span 4; border: 1px solid var(--outline-variant); background: transparent;">
-                <p style="margin-bottom: 24px; font-style: italic;">"Handling expenses through LIVO saved my friendship with my roommate. No more awkward 'who owes what' texts."</p>
-                <div style="font-weight: 600;">Elena Rodriguez</div>
-                <div style="font-size: 12px; color: var(--secondary);">San Francisco, CA</div>
+                <p style="margin-bottom: 24px; font-style: italic;">"Finding reliable househelp used to be a headache. LIVO helped us find a trustworthy professional in our area within a day."</p>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--surface-low); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--livo-red);">NJ</div>
+                    <div>
+                        <div style="font-weight: 600;">Nusrat Jahan</div>
+                        <div style="font-size: 12px; color: var(--secondary);">Zindabazar, Sylhet</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -121,7 +151,7 @@
         <p style="margin-bottom: 40px; opacity: 0.8; max-width: 600px; margin-left: auto; margin-right: auto;">
             Join 50,000+ people who have found their perfect home and community through LIVO's curated platform.
         </p>
-        <a href="#" class="btn btn-primary" style="background: white; color: var(--livo-red);">Get Started Free</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary" style="background: white; color: var(--livo-red);">Get Started Free</a>
     </div>
 </section>
 {% endblock %}

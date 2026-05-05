@@ -24,8 +24,8 @@
         <div class="container nav">
             <a href="/" class="logo">LIVO</a>
             <nav class="nav-links">
-                <a href="#">Rooms</a>
-                <a href="#">Househelp</a>
+                <a href="{% url 'feed' 'ROOM' %}">Roomms</a>
+                <a href="{% url 'feed' 'HELP' %}">Househelp</a>
             </nav>
             <div class="nav-actions">
                 {% if user.is_authenticated %}

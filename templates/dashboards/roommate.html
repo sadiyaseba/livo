@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="profile-actions">
-                <a href="#" class="btn btn-primary create-post-btn">Post Room Listing</a>
+                <a href="{% url 'create_post' %}" class="btn btn-primary create-post-btn">Post Room Listing</a>
                 {% if not residencies %}
                     <a href="{% url 'add_apartment' %}" class="btn btn-secondary">Register My Building</a>
                 {% endif %}
@@ -265,8 +265,8 @@
                             <p style="margin: 0; font-size: 0.85rem; color: #64748b;">${{ post.price }} &middot; Posted on {{ post.created_at|date:"M d, Y" }}</p>
                         </div>
                         <div class="listing-actions" style="display: flex; gap: 10px;">
-                            <a href="#" class="btn btn-secondary compact" style="font-size: 0.8rem; padding: 8px 16px;">Edit</a>
-                            <form action="#" method="POST" style="margin: 0;">
+                            <a href="{% url 'edit_post' post.id %}" class="btn btn-secondary compact" style="font-size: 0.8rem; padding: 8px 16px;">Edit</a>
+                            <form action="{% url 'delete_post' post.id %}" method="POST" style="margin: 0;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-danger compact" style="font-size: 0.8rem; padding: 8px 16px;" onclick="return confirm('Delete this listing? This cannot be undone.');">Delete</button>
                             </form>
