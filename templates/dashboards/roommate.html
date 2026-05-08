@@ -277,7 +277,7 @@
                         <div class="listing-main">
                             <span class="role-badge" style="background:#e0f2fe; color:#0369a1; font-size: 0.65rem; margin-bottom: 8px;">{{ post.get_type_display }}</span>
                             <h4 style="margin: 0 0 4px 0; color: #0f172a;">{{ post.title }}</h4>
-                            <p style="margin: 0; font-size: 0.85rem; color: #64748b;">${{ post.price }} &middot; Posted on {{ post.created_at|date:"M d, Y" }}</p>
+                            <p style="margin: 0; font-size: 0.85rem; color: #64748b;">৳{{ post.price }} &middot; Posted on {{ post.created_at|date:"M d, Y" }}</p>
                         </div>
                         <div class="listing-actions" style="display: flex; gap: 10px;">
                             <a href="{% url 'edit_post' post.id %}" class="btn btn-secondary compact" style="font-size: 0.8rem; padding: 8px 16px;">Edit</a>
